@@ -1,57 +1,42 @@
 { config, pkgs, ... }:
 
-boot = boot.loader.grub
-
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./desktop.nix
-      ./services.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./desktop.nix
+    ./service.nix
+  ];
 
-users = {
-  users = {neurohost = {
+  users.users.neurohost = {
     isNormalUser = true;
     description = "neurohost";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; []
-  }}
-  }
-
-
-environment.systemPackages = with pkgs; [
-                                       #important  
-vim 
-wget
-git
-curl
-neofetch
-neovim
-vscodium
-nano
-firefox-esr
-python3
-coreutils-full
-gparted
-
-                                   #proparotiry
-discord
-spotify
-obs-studio
-zoom-us
-                                              ];
-
-
-boot = {
-  enable = true;
-  device = "/dev/sda";
-  useOSProber = true;
+    packages = with pkgs; [];
   };
 
+  environment.systemPackages = with pkgs; [
+      wget2
+      curl
+      neofetch
+      vscodium-fhs
+      firefox-esr
+      coreutils-full
+      gparted
 
+      discord
+      spotify
+      obs-studio
+      zoom-us
+    ];
 
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+    useOSProber = true;
+  };
 
-system.stateVersion = "23.11"; 
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  system.stateVersion = "23.11";
 }
