@@ -1,63 +1,60 @@
 { config, pkgs, ... }:
 
-xserver = services.xserver.desktopManager
-x = services.xserver
-pipewire = services.pipewire
+{
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+    enable = true; 
+    displayManager = {
+      sddm = { enable = true; };
+    };
+    
+    desktopManager = {
+      plasma5 = { enable = true; };
+    };
+  };
 
-xserver = {
-  gdm = {
-    enable = true;
-    }
+  services = {
+    pipewire = {
+      enable = true;
+      };
+    };
 
-  gnome = {
-    enable = true;
-    debug = true;
-    }
-  }
+  environment = {
+    plasma5 = {
+      excludePackages = [];
+      };
+    };
 
-environment = {
-  gnome = {
-    excludePackages = []
-    }
-  }
+  time.timeZone = "Asia/Kolkata";
 
-nixpkgs = {
-  config.allowUnfree = true;
-  }
+  i18n = {
+    defaultLocale = "en_IN";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_IN";
+      LC_IDENTIFICATION = "en_IN";
+      LC_MEASUREMENT = "en_IN";
+      LC_MONETARY = "en_IN";
+      LC_NAME = "en_IN";
+      LC_NUMERIC = "en_IN";
+      LC_PAPER = "en_IN";
+      LC_TELEPHONE = "en_IN";
+      LC_TIME = "en_IN";
+    };
+  };
 
-x = {
-  enable = true;
-  layout = "us";
-  xkbVariant = "";
-  }
+  networking = {
+    networkmanager = {
+      enable = true;
+      };
+    };
 
-time = {
-  timeZone = "Asia/Kolkata";
-  }
+  hardware = {
+    bluetooth = {
+      enable = true;
+      };
+    };
 
-i18n = {
-  defaultLocale = "en_IN";
-  extraLocaleSettings = {
-    LC_ADDRESS = "en_IN";
-    LC_IDENTIFICATION = "en_IN";
-    LC_MEASUREMENT = "en_IN";
-    LC_MONETARY = "en_IN";
-    LC_NAME = "en_IN";
-    LC_NUMERIC = "en_IN";
-    LC_PAPER = "en_IN";
-    LC_TELEPHONE = "en_IN";
-    LC_TIME = "en_IN";
-  }
-    }
 
-pipewire = {
-  enable = true;
-  package
-  socketActivation = true;
-  pulse.enable = true;
-  jack.enable = true;
-  alsa.enable = false;
-  alsa.support32Bit = false;
-
-  }
+}
 
